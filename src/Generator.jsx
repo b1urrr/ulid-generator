@@ -10,6 +10,21 @@ const Generator = () => {
     const binary = Coder.Uuid.decodeTrusted(origExpId);
     return Coder.Crockford32.encodeTrusted(binary);
   };
+
+  const checkValidity = (e) => {
+    let value = e.target.value
+    if (value.length !== 36) {
+      alert('Input value is not 36 characters long, you probably copied the origClientId incorrectly')
+      return
+    }
+    if (value.charAt(8) !== '-' || (value.charAt(13) !== '-') || (value.charAt(18) !== '-') || (value.charAt(23) !== '-')) {
+      alert('Input value is invalid, you probably copied the origClientId incorrectly')
+      return
+    } else {
+      toast.success('origClientId pasted successfully')
+    }
+    setOrigClientId(e.target.value)
+  }
   return (
     <>
       <div className="form">
@@ -18,7 +33,7 @@ const Generator = () => {
             type="text"
             placeholder="Enter valid origClientId"
             value={origClientId}
-            onChange={(e) => setOrigClientId(e.target.value)}
+            onChange={checkValidity}
           />
           <input
             type="text"
@@ -38,6 +53,7 @@ const Generator = () => {
         position="top-center"
         theme="light"
         closeButton={false}
+        limit={2}
          />
       </div>
     </>
